@@ -29,4 +29,21 @@ else:
                 print("Sobrepeso II")
             else:
                 if IMC >= 40:
-                    print("Sobrepeso II")
+                    print("Sobrepeso III")
+
+
+if IMC <18.5:
+    mensaje = "Bajo peso"
+elif IMC < 25:
+    mensaje = "Peso normal"
+elif IMC < 35:
+    mensaje = "Obesidad I"
+elif IMC < 40:
+    mensaje = "Obesidad II"
+else:
+    mensaje = "Obesidad III"
+
+print(f"Paciente,{nombre},tiene un IMC de {IMC:0.2f} y su condicion es {mensaje}.")
+
+
+
