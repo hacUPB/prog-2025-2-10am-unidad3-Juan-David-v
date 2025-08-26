@@ -12,18 +12,18 @@ if residuo == 0:
 
 #Condicional Doble: 
 print("=== MENÚ PRINCIPAL ===")
-print("1. Ver datos de sensores")
-print("2. Configurar parámetros")
-print("3. Salir")
+print("A. Ver datos de sensores")
+print("B. Configurar parámetros")
+print("C. Salir")
 
 opcion = int(input("Selecciona una opción: "))
 
 match opcion:
-    case 1:
+    case "A":
         print("Mostrando datos de sensores...")
-    case 2:
+    case "B":
         print("Entrando a configuración...")
-    case 3:
+    case "C":
         print("Saliendo del programa...")
     case _:
         print("Opción inválida.")
