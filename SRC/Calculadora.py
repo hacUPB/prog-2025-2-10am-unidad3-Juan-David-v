@@ -32,7 +32,7 @@ while control == True:
 while True:
     numero1 = int(input("ingrese el primer numero: "))
     numero2=int(input("ingrese el segundo numero: "))
-    print("S. Sumar\nR. Restar \nM. Multiplicar\nD. Dividir\nE. Salir")
+    print("S. Sumar\nR. Restar \nM. Multiplicar\nD. Dividir\nP. Potencia\nE. Salir")
     opcion = input("Elija una opcion")
     opcion = opcion.upper() # se convierte el texto en mayuscula 
 
@@ -50,6 +50,9 @@ while True:
         case "D":
             print("Dividir")
             resultado= numero1 / numero2
+        case "P":
+            print("potencia")
+            resultado= numero1 ** numero2
         case "E":
             break
         case _:
