@@ -7,7 +7,7 @@ for cont in range (5, 20, 1):
 #Finalmente, muestra el resultado de la suma en pantalla.#
 
 # No puede ingresar valores negativos y no se le permite seguir hasta que ingrese un positivo
- 
+'''
 n = int(input("Ingresa un número entero positivo: "))
 while n < 0:
     n = int(input("Ingresa un número entero positivo: "))
@@ -16,3 +16,11 @@ for i in range (1, n + 1):
     if i % 2 == 0:
         Suma += i # acum= acum + cont# 
 print("La suma de los números pares desde 1 hasta", n, "es:", Suma)
+'''
+
+mensaje = "Universidad Pontificia Bolivariana"
+numero = int(input("Ingrese el numero entero positivo: "))
+# imprimir el mensaje un numero de veces 
+
+for i in range (numero):
+    print (f"{i+1}. {mensaje}") 
