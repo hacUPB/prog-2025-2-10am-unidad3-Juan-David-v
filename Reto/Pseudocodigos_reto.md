@@ -245,7 +245,7 @@ INICIO
     
         i= i+ 1
 
-        IMPRIMIR( "Iteración:", iter;"Velocidad:", round(velocidad,1), "nudos";A:", round(angulo_ataque,2), "°","Flaps:", flaps, "°"Tasa_descenso:", round(tasa_descenso,2), "ft/s", "| Acción:", accion)
+        IMPRIMIR( "Iteración:", iter;"Velocidad:", round(velocidad,1), "nudos";A:", round(angulo_ataque,2), "°","Flaps:", flaps, "°"Tasa_descenso:", round(tasa_descenso,2), "ft/s", "| Acción:", accion
 
     FIN MIENTRAS
 
@@ -263,6 +263,6 @@ Determinar y validar las expresiones matemáticas empleadas (cálculo de la tasa
 
 Organizar el pseudocódigo y verificar su coherencia lógica mediante pruebas de escritorio.
 
-El planteamiento, adaptación y validación final del ejercicio fueron realizados por el estudiante, garantizando que el material cumple con los objetivos de aprendizaje.
+El planteamiento, adaptación y validación final del ejercicio fueron realizados por nosotros
 
 
