@@ -245,7 +245,7 @@ INICIO
     
         i= i+ 1
 
-        IMPRIMIR( "Iteración:", iter;"Velocidad:", round(velocidad,1), "nudos";A:", round(angulo_ataque,2), "°","Flaps:", flaps, "°"Tasa_descenso:", round(tasa_descenso,2), "ft/s", "| Acción:", accion
+        IMPRIMIR( "Iteración:", iter;"Velocidad:", round(velocidad,1), "nudos";A:", round(angulo_ataque,2), "°","Flaps:", flaps, "°"Tasa_descenso:", round(tasa_descenso,2), "ft/s", "| Acción:", accion)
 
     FIN MIENTRAS
 
