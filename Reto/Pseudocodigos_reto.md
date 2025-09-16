@@ -266,3 +266,61 @@ Organizar el pseudocódigo y verificar su coherencia lógica mediante pruebas de
 El planteamiento, adaptación y validación final del ejercicio fueron realizados por nosotros
 
 
+
+# Prueba de escritorio del primer ejercicio
+ Valores iniciales
+ 
+comb_inicial = 200 gal
+v_inicial = 500 km/h
+a = 2 km/h²
+resistencia_aire = 1 km/h²
+consumo = 5 gal/iteración
+t = 5 s
+comb_min = 100 gal
+tiempo_max = 3600 s
+ 
+
+ 
+comb_actual = 200     velocidad = 500tiempo = 0i = 0
+ 
+
+ 
+Si comb_actual <= comb_min ⇒ v_objetivo = 400, accion = "Desacelerar - ALERTA"
+Si comb_actual > comb_min ⇒ v_objetivo = 500, accion = "Acelerar"
+Si velocidad > v_objetivo ⇒ velocidad = velocidad - (resistencia_aire * t)
+Si velocidad < v_objetivo ⇒ velocidad = velocidad + (a * t)
+tiempo = tiempo + t
+i = i + 1
+comb_actual = comb_actual - consumo
+ 
+
+ 
+Cada iteración consume 5 gal ⇒ 200 / 5 = 40 iteraciones hasta quedarse en 0.
+ 
+Después de 20 iteraciones: comb_actual = 200 - 20*5 = 100.
+ 
+    En las primeras 20 iteraciones la condición comb_actual > 100 se cumple al inicio de la iteración, por eso la alerta se activa en la iteración 21 (cuando comb_actual al inicio es 100).
+ 
+Reducción de velocidad en modo ALERTA: cada iteración resta resistencia_aire * t = 1 * 5 = 5 km/h.
+ 
+    Desde la iteración 21 hasta la 40 hay 20 iteraciones en ALERTA → velocidad se reduce 20 * 5 = 100 km/h.
+    Velocidad final = 500 - 100 = 400 km/h.
+ 
+Iteraciones clave
+| Iter | Tiempo (s) | Comb (gal) | Vel (km/h) | Acción               |
+| ---- | ---------- | ---------- | ---------- | -------------------- |
+| 1  | 5 | 195| 500 | Acelerar |
+| 5 | 25 | 175  | 500 | Acelerar|
+| 10 | 50 | 150 | 500 | Acelerar |
+| 20  | 100| 100| 500 | Acelerar|
+| 21 | 105 | 95 | 495        | Desacelerar – ALERTA |
+| 30 | 150| 50| 450| Desacelerar – ALERTA |
+| 39 | 195| 5  | 405| Desacelerar – ALERTA |
+| 40 | 200| 0 | 400 | Desacelerar – ALERTA |
+ 
+Resultado final :
+Simulación finalizada
+Iteraciones: 40
+Tiempo total: 200 s (3 min 20 s)
+Estado final = Velocidad: 400 km/h | Combustible: 0 gal
+
