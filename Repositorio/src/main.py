@@ -8,7 +8,7 @@ Modulos.fibonacci(variable)
 multiplicando = int(input("ingrese el numero entero: "))
 Modulos.tabla(multiplicando)
 '''
-from Modulos import * # * significa todo
+from modulo.Modulos import * # * significa todo
  
 def main():
    while True:
