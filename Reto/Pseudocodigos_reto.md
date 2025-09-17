@@ -11,6 +11,7 @@ La simulación continúa hasta que el combustible se agote o se cumpla un tiempo
 |                  | a                | Aceleración  |      float     |
 |                  | resistencia_aire | Factor de resistencia del aire |       float   |
 | **Constante**    | comb_min         | Nivel mínimo de combustible seguro (= 100) |    int      |
+|                  | consumo | es el consumo de combustible que realiza la aeronave por segundo |    int      |
 |                  | t               | Intervalo de tiempo por iteración |   int    |
 |                  | tiempo_max       | Tiempo máximo de simulación   |  int  |
 | **Control**      | i             | Número de iteraciones  | int      |
@@ -27,15 +28,15 @@ Inicio
     Leer a =
     Leer resistencia_aire =
 
-    comb_min = 100          // Combustible mínimo seguro
-    t = 5                  // Intervalo de tiempo (5 segundos)
-    tiempo_max = 3600       // Tiempo máximo de simulación (1 hora)
-
+    comb_min = 100         
+    t = 5               
+    tiempo_max = 20      
     
    comb_actual = comb_inicial
    velocidad = v_inicial
    v_objetivo = v_inicial
    tiempo = 0
+   consumo= 50 
    i = 0
    accion = ""
 
