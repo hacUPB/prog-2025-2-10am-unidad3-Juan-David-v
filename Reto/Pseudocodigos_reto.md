@@ -11,6 +11,7 @@ La simulación continúa hasta que el combustible se agote o se cumpla un tiempo
 |                  | a                | Aceleración  |      float     |
 |                  | resistencia_aire | Factor de resistencia del aire |       float   |
 | **Constante**    | comb_min         | Nivel mínimo de combustible seguro (= 100) |    int      |
+|                  | consumo | es el consumo de combustible que realiza la aeronave por segundo |    int      |
 |                  | t               | Intervalo de tiempo por iteración |   int    |
 |                  | tiempo_max       | Tiempo máximo de simulación   |  int  |
 | **Control**      | i             | Número de iteraciones  | int      |
@@ -27,15 +28,15 @@ Inicio
     Leer a =
     Leer resistencia_aire =
 
-    comb_min = 100          // Combustible mínimo seguro
-    t = 5                  // Intervalo de tiempo (5 segundos)
-    tiempo_max = 3600       // Tiempo máximo de simulación (1 hora)
-
+    comb_min = 100         
+    t = 5               
+    tiempo_max = 20      
     
    comb_actual = comb_inicial
    velocidad = v_inicial
    v_objetivo = v_inicial
    tiempo = 0
+   consumo= 50 
    i = 0
    accion = ""
 
@@ -64,8 +65,7 @@ Inicio
 Imprimir ("Iteración:", iter, " Tiempo:", tiempo, " Combustible:", comb_actual, "Velocidad:", velocidad,  " Acción:", accion)
 
     Fin mientras
-    Imprimir( ("Simulación finalizada");("Iteraciones:", i);("Tiempo total:", tiempo)
-     ("Estado final= Velocidad:"), velocidad, " (Combustible:", comb_actual))
+    Imprimir( ("Simulación finalizada");("Iteraciones:", i);("Tiempo total:", tiempo), ("Estado final= Velocidad:"), velocidad, " (Combustible:"comb_actual))
 ```
 
 
@@ -148,7 +148,7 @@ Inicio
                  " | Altitud: ", altitud,
                  " | Velocidad: ", velocidad,
                  " | Ángulo de ataque: ", angulo_ataque,
-                 " | Acción: ", accion
+                 " ¡ Acción: ", accion
 
     FinMientras
 
@@ -164,93 +164,92 @@ Un avión en fase de aproximación inicia con una velocidad de 220 nudos, un án
 
 
 
-| Variable         | Descripción                              | Tipo   | Clasificación       |
-|------------------|------------------------------------------|--------|---------------------|
-| velocidad | Velocidad del avión  | Float  | Entrada |
-| angulo_ataque | Ángulo de ataque | Float  | Entrada |
-| flaps| Posición de los flaps | Int    | Control / Salida    |
-| tasa_descenso | Tasa de descenso calculado Float  | Variable de proceso |
-| i | Número de iteración| Int    | Control      |
-| accion | Acción realizada en la iteración         | Texto  | Salida  |
-| MAX_ITER | Máximo de iteraciones  | Int    | Constante           |
-| D_CRITICO | Límite de tasa de descenso  | Int    | Constante   |
-| A_CRITICO  | Ángulo de ataque crítico   | Int    | Constante  |
+| Variable       | Descripción                               | Tipo   | Clasificación         |
+|----------------|-------------------------------------------|--------|-----------------------|
+| velocidad | Velocidad actual del avión | Float  | Entrada|
+| angulo_ataque  | Ángulo de ataque del avión (grados) | Float | Entrada|
+| flaps          | Posición de los flaps (grados)| Int | Entrada |
+| tasa_descenso  | Tasa de descenso calculada  Float  | Variable de proceso |
+| perdida_vel | Pérdida de velocidad por resistencia | Float  | Variable de proceso   |
+| i | Número de iteración| Int    | Control    |
+| accion | Acción realizada en la iteración   | Texto  | Salida |
+| MAX_ITER | Máximo número de iteraciones | Int    | Constante|
+| D_CRITICO | Límite de tasa de descenso  | Int    | Constante |
+| A_CRITICO| Ángulo de ataque crítico | Int    | Constante |
+| FLAP_MIN| Límite inferior de flaps | Int    | Constante   |
+| FLAP_MAX | Límite superior de flaps | Int    | Constante   |
 
-´´´
+
+'''
 INICIO
 
-
-    velocidad = 220   
-    angulo_ataque = 5
-    flaps = 0
-    iter = 0
+    Leer velocidad
+    Leer angulo_ataque 
+    Leer flaps 
+    i = 0
  
     T = 10 
-    MAX_ITER =20
-    D_CRITICO= 50
-    A_CRITICO =12   
+    MAX_ITER = 20
+    D_CRITICO = 50
+    A_CRITICO = 12   
     FLAP_MIN = 0
-    FLAP_MAX = 0
+    FLAP_MAX = 30   // Límite superior de flaps
 
- 
-    MIENTRAS (iter < MAX_ITER) Y (velocidad > 80) HACER
-
+    MIENTRAS (i < MAX_ITER) Y (velocidad > 80) HACER
       
-        tasa_descenso =velocidad * sin(angulo_ataque * π / 180)
+        tasa_descenso = velocidad * sin(angulo_ataque * π / 180)
 
         SI (tasa_descenso > D_CRITICO) Entonces
-            nuevo_flap =flaps + 10
-            accion ="Aumentar flaps (ganar sustentación)"
+            nuevo_flap = flaps + 10
+            accion = "Aumentar flaps (ganar sustentación)"
         SINO SI (angulo_ataque > A_CRITICO) ENTONCES
-            nuevo_flap =flaps - 10
-            accion ="Reducir flaps (evitar pérdida)"
+            nuevo_flap = flaps - 10
+            accion = "Reducir flaps (evitar pérdida)"
         SINO
-            nuevo_flap =flaps
-            accion ="Mantener flaps"
+            nuevo_flap = flaps
+            accion = "Mantener flaps"
         FIN SI
 
         SI nuevo_flap < FLAP_MIN ENTONCES
-             nuevo_flap ← FLAP_MIN 
+             nuevo_flap = FLAP_MIN 
         FIN SI
         SI nuevo_flap > FLAP_MAX ENTONCES
-            nuevo_flap ← FLAP_MAX 
-            FIN SI
-
-
-        flaps= nuevo_flap
-
- 
-        SI accion = "Aumentar flaps (ganar sustentación)" ENTONCES
-            angulo_ataque =angulo_ataque + 0.5
-        SINO 
-        SI accion = "Reducir flaps (evitar pérdida)" ENTONCES
-            angulo_ataque =angulo_ataque - 0.5
+            nuevo_flap = FLAP_MAX 
         FIN SI
 
-      
+        flaps = nuevo_flap
+
+        SI accion = "Aumentar flaps (ganar sustentación)" ENTONCES
+            angulo_ataque = angulo_ataque + 0.5
+        SINO SI accion = "Reducir flaps (evitar pérdida)" ENTONCES
+            angulo_ataque = angulo_ataque - 0.5
+        FIN SI
+
         SI angulo_ataque < -5 ENTONCES
-             angulo_ataque ← -5 
+             angulo_ataque = -5 
         FIN SI
         SI angulo_ataque > 18 ENTONCES 
-        angulo_ataque ← 18
-         FIN SI
+            angulo_ataque = 18
+        FIN SI
 
-        perdida_vel= 5 + (flaps / 2)
-        velocidad =velocidad - perdida_vel
+        perdida_vel = 5 + (flaps / 2)
+        velocidad = velocidad - perdida_vel
 
         SI velocidad < 0 ENTONCES
-         velocidad ← 0 
-         FIN SI
+             velocidad = 0 
+        FIN SI
 
-    
-        i= i+ 1
+        i = i + 1
+
 
         IMPRIMIR( "Iteración:", iter;"Velocidad:", round(velocidad,1), "nudos";A:", round(angulo_ataque,2), "°","Flaps:", flaps, "°"Tasa_descenso:", round(tasa_descenso,2), "ft/s", "| Acción:", accion)
+
 
     FIN MIENTRAS
 
 FIN
 
+´´´
 
 
 
