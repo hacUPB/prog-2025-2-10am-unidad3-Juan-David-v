@@ -18,9 +18,9 @@ while True:
             
 
       
-            comb_min = 100
+            comb_min = 500
             t = 5
-            tiempo_max = 20
+            tiempo_max = 60
             consumo = 50  
                      
             comb_actual = comb_inicial
@@ -42,12 +42,14 @@ while True:
                 else:
                     v_objetivo = 500
                     accion = "Acelerar"
+                    a += 5
 
-                if velocidad > v_objetivo:
-                    velocidad = velocidad - (resistencia_aire * t)
-                elif velocidad < v_objetivo:
-                    velocidad = velocidad + (resistencia_aire * t)
-
+                if velocidad >= v_objetivo:
+                    a -= 5
+                else:
+                    a += 5
+                
+                velocidad = a * t -  (resistencia_aire * t)
                 tiempo += t
                 i += 1
                 comb_actual -= consumo
@@ -103,19 +105,67 @@ while True:
 
                 i += 1
 
-                print(f"Iteración: {i} \n Altitud: {altitud:.2f}, Velocidad: {velocidad:.2f} "
-                      f"\nÁngulo de ataque: {angulo_ataque}° \n Acción: {accion}")
-
-            print("\n  Calculo finalizado")
-            print(f"Iteraciones: {i}")
-            print(f"Altitud final: {altitud:}\n Velocidad: {velocidad:.2f} "
-                  f"\n Ángulo de ataque: {angulo_ataque}°")
+                print(f"Iteración: {i} \n Altitud: {altitud:.2f}, Velocidad: {velocidad:.2f} \nÁngulo de ataque: {angulo_ataque}° \n Acción: {accion}")
 
         case "C":
-            print("")
+            import math
+            print("\n Tasa de descenso y flaps ")
+            
+
+            velocidad = float(input("Ingrese la velocidad inicial del avión (nudos): "))
+            angulo_ataque = float(input("Ingrese el ángulo de ataque inicial (°): "))
+            flaps = int(input("Ingrese la posición inicial de los flaps (°): "))
+
+            MAX_ITER = 20
+            D_CRITICO = 50
+            A_CRITICO = 12
+            FLAP_MIN = 0
+            FLAP_MAX = 30
+            i= 0
+
+            while i < MAX_ITER and velocidad > 80:
+                tasa_descenso = velocidad * math.sin(math.radians(angulo_ataque))
+                if tasa_descenso > D_CRITICO:
+                    nuevo_flap = flaps + 10
+                    accion = "Aumentar flaps (ganar sustentación)"
+                elif angulo_ataque > A_CRITICO:
+                     nuevo_flap = flaps - 10
+                     accion = "Reducir flaps (evitar pérdida)"
+                else:
+                    nuevo_flap = flaps
+                    accion = "Mantener flaps"
+                if nuevo_flap < FLAP_MIN:
+                    nuevo_flap = FLAP_MIN
+                if nuevo_flap > FLAP_MAX:
+                    nuevo_flap = FLAP_MAX
+
+                flaps = nuevo_flap
+                if accion == "Aumentar flaps (ganar sustentación)":
+                    angulo_ataque += 0.5
+                elif accion == "Reducir flaps (evitar pérdida)":
+                    angulo_ataque -= 0.5
+                    if angulo_ataque < -5:
+                        angulo_ataque = -5
+                    if angulo_ataque > 18:
+                        angulo_ataque = 18
+
+                    perdida_vel = 5 + (flaps / 2)
+                    velocidad -= perdida_vel
+                    if velocidad < 0:
+                        velocidad = 0
+
+
+                    i += 1
+
+                    print(f"Iteración: {i} \n Velocidad: {velocidad:} nudos \n Ángulo de ataque: {angulo_ataque}° \n Flaps: {flaps}° \n Tasa de descenso: {tasa_descenso:} \n Acción: {accion}")
+
+                        
+
+
+
 
         case "D":
-            print("")
+            print(" Salir")
             break
             
 
